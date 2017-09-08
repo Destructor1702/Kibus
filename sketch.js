@@ -7,6 +7,7 @@ var end;        //casilla final
 var en_kibus = false;
 var en_end   = true;
 var locked   = false;
+var Came;
 
 function setup() {
   background(19, 63, 12);
@@ -23,6 +24,9 @@ function setup() {
     }
   }
   //control
+
+    //frameRate(5);
+
   var   factorObstaculos = 0.40;
   if(getParameterByName('obs') !== null) {
       factorObstaculos = getParameterByName('obs') * 0.01;
@@ -56,24 +60,63 @@ function draw() {
   for (var i = 0; i < grid.length; i++) {
     grid[i].show();
   }
+  if(locked === true){
+      Heuristic();
+  }
 } //!draw()
 
 ///HEURISTIC
 function Heuristic() {
-    if(Bresenham() !== null){
-        B = Bresenham();
-    }else{
-        B = BlindSearch();
-    }
-    setCurrent(B.i,B.j);
+  if(current !== end){
+
+      if(Bresenham() !== null && Bresenham()!== undefined){
+          B = Bresenham();
+          setCurrent(B.i,B.j);
+      }else{
+          B = BlindSearch();
+          if(B === undefined){
+              B = Came;
+          }
+          setCurrent(B.i,B.j);
+      }
+      Came = B;
+
+
+  }
 }
 
 function Bresenham() {
-    
+    return null;
+    //return line(current,end);
+}
+function line(startCoordinates, endCoordinates) {
+
+    var x1 = startCoordinates.i;
+    var y1 = startCoordinates.j;
+    var x2 = endCoordinates.i;
+    var y2 = endCoordinates.j;
+
+    var sx,sy;
+    sx = sy = 0;
+    if(x1 > x2){sx = -1;}
+    if(x1 < x2){sx = 1;}
+    if(x1 > x2){sy = -1;}
+    if(x1 < x2){sy = 1;}
+
+     if(grid[index(sy, sx)].isObstacule){
+         return null;
+     }
+     return grid[index(sx, sy)];
+
 }
 
 function BlindSearch() {
-
+   if(current.checkNeighbors() === undefined){
+       setCurrent(before.i,before.j);
+   }else{
+       var nextpos = current.checkNeighbors();
+       return grid[index(nextpos.i,nextpos.j)];
+   }
 }
 
 
@@ -86,9 +129,7 @@ function index(i, j) {
 }
 
 function setCurrent(x,y){
-
-        before = current;
-
+    before = current;
     for(g in grid){
         grid[g].current = false;
     }
@@ -126,32 +167,3 @@ function getParameterByName(name, url) {
 }
 
 
-
-
-function supercover_line(p0, p1) {
-    var dx = p1.x-p0.x, dy = p1.y-p0.y;
-    var nx = Math.abs(dx), ny = Math.abs(dy);
-    var sign_x = dx > 0? 1 : -1, sign_y = dy > 0? 1 : -1;
-
-    var p = new Point(p0.x, p0.y);
-    var points = [new Point(p.x, p.y)];
-    for (var ix = 0, iy = 0; ix < nx || iy < ny;) {
-        if ((0.5+ix) / nx == (0.5+iy) / ny) {
-            // next step is diagonal
-            p.x += sign_x;
-            p.y += sign_y;
-            ix++;
-            iy++;
-        } else if ((0.5+ix) / nx < (0.5+iy) / ny) {
-            // next step is horizontal
-            p.x += sign_x;
-            ix++;
-        } else {
-            // next step is vertical
-            p.y += sign_y;
-            iy++;
-        }
-        points.push(new Point(p.x, p.y));
-    }
-    return points;
-}

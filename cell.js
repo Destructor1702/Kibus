@@ -14,7 +14,7 @@ function Cell(i, j) {
     house_img = loadImage("./assets/house.png");
 
   this.checkNeighbors = function() {
-      //Retorna vecino no obstaculo aleatorio
+      //Retorna vecino no obstaculo con menor peso
       // o undefined en caso de no existir
     var neighbors = [];
 
@@ -22,25 +22,43 @@ function Cell(i, j) {
     var right  = grid[index(i+1, j)];
     var bottom = grid[index(i, j+1)];
     var left   = grid[index(i-1, j)];
+    var d1     = grid[index(i-1, j-1)];
+    var d2     = grid[index(i+1, j-1)];
+    var d3     = grid[index(i-1, j+1)];
+    var d4     = grid[index(i+1, j+1)];
 
-    if (top && !top.visited && !top.isObstacule) {
+    if (top  && !top.isObstacule && top !== before) {
       neighbors.push(top);
     }
-    if (right && !right.visited && !right.isObstacule) {
+    if (right && !right.isObstacule && right !== before) {
       neighbors.push(right);
     }
-    if (bottom && !bottom.visited && !bottom.isObstacule) {
+    if (bottom && !bottom.isObstacule && bottom !== before) {
       neighbors.push(bottom);
     }
-    if (left && !left.visited && !left.isObstacule) {
+    if (left && !left.isObstacule && left !== before) {
       neighbors.push(left);
+    }if (d1 && !d1.isObstacule && d1 !== before) {
+          neighbors.push(d1);
+    }if (d2 && !d2.isObstacule && d2 !== before) {
+          neighbors.push(d2);
+    }if (d3 && !d3.isObstacule && d3 !== before) {
+          neighbors.push(d3);
+    }if (d4 && !d4.isObstacule && d4 !== before) {
+          neighbors.push(d4);
     }
 
     if (neighbors.length > 0) {
-      var r = floor(random(0, neighbors.length));
-      return neighbors[r];
+        for(n in neighbors){
+            if (neighbors[n] === end){
+                return neighbors[n];
+            }
+        }
+      neighbors.sort(function (a,b){return a.weightValue - (b.weightValue-1)});
+      return neighbors[0];
+
     } else {
-      return undefined;
+      return before;
     }
 
 
@@ -78,7 +96,7 @@ function Cell(i, j) {
 
     }else if(this.visited){
           //si fue visitado pintar bandera y valor
-          fill(27 +(this.weightValue*5) , 104, 27);
+          fill(27 +(this.weightValue*10) , 104, 27);
           stroke(30,0,255,0);
           rect(x, y, w, w);
           image(flag_img,x,y);
