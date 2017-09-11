@@ -26,8 +26,8 @@
           <button class="button" style="background-color: coral"
                   onclick="location.href='index.html?obs='+document.getElementById('obstSlider').value;">Otro Mapa</button>
           <br>
-          <div>Obstaculos(%):<small style="font-size: 8pt"> Click arriba*</small></div>
-          <input id="obstSlider" title="Obstaculos(%)" type="range" value="40"  min="20" max="80">
+          <div>Obstaculos:<small style="font-size: 8pt"> Click arriba*</small></div>
+          20% <input id="obstSlider" title="Obstaculos(%)" type="range" value="40"  min="20" max="80"> 80%
           <br><br>
           <button class="roundButton" id="Kb_btn" style="
                   background-color: forestgreen;
@@ -35,15 +35,24 @@
                   background-repeat: no-repeat;
                   background-color: forestgreen;
                   background-position: center;"
-                  onclick="en_kibus = true;
-                  "></button>
+                  onclick="en_kibus = true; "></button>
           <button class="roundButton" style="
                   background-color: forestgreen;
                   background: url('./assets/house.png');
                   background-repeat: no-repeat;
                   background-color: forestgreen;
                   background-position: center;"
-                  onclick="en_end = true;"></button>
+                  onclick="en_end   = true;"></button>
+          <button class="roundButton" style="
+                  background-color: forestgreen;
+                  background: url('./assets/obstaculo.png');
+                  background-repeat: no-repeat;
+                  background-color: forestgreen;
+                  background-position: center;"
+                  onclick="en_tree  = true;"></button>
+          <button class="roundButton" style="
+                  background-color: forestgreen;"
+                  onclick="en_empty = true;"></button>
                 <br>
           <button class="button" onclick="
                   locked = true;

@@ -4,9 +4,11 @@ var grid = [];  //mapa
 var current;    //casilla actual
 var end;        //casilla final
 //var stack = [];
-var en_kibus = false;
-var en_end   = true;
-var locked   = false;
+var en_kibus  = false;
+var en_end    = false;
+var en_tree   = false;
+var en_empty  = false;
+var locked    = false;
 var Came;
 
 function setup() {
@@ -37,6 +39,7 @@ function setup() {
         var r2 = randomIntFromInterval(0, cols - 1);
         grid[index(r1, r2)].isObstacule = true;
     }
+    //establecer inicio y fin por defeto
     setCurrent(0,0);
     setEnd(rows-1,cols-1);
 
@@ -51,7 +54,21 @@ function mousePressed() {
            setCurrent(clc_x, clc_y);
        }if(en_end){
            setEnd(clc_x,clc_y);
-       }
+       }if(en_tree){
+          if(current !== grid[index(clc_x,clc_y)] && end !== grid[index(clc_x,clc_y)]){
+            grid[index(clc_x,clc_y)].isObstacule=true;
+            grid[index(clc_x,clc_y)].visited=false;
+            en_tree = false;
+          }
+       }if(en_empty){
+          if(current !== grid[index(clc_x,clc_y)] && end !== grid[index(clc_x,clc_y)]){
+            grid[index(clc_x,clc_y)].isObstacule=false;
+            grid[index(clc_x,clc_y)].visited=false;
+            grid[index(clc_x,clc_y)].weightValue=0;
+            en_empty = false;
+          }
+    }
+
    }
 }
 

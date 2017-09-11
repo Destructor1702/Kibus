@@ -33,11 +33,10 @@ function Cell(i, j) {
     if (right && !right.isObstacule && right !== before) {
       neighbors.push(right);
     }
-    if (bottom && !bottom.isObstacule && bottom !== before) {
-      neighbors.push(bottom);
-    }
     if (left && !left.isObstacule && left !== before) {
       neighbors.push(left);
+    }if (bottom && !bottom.isObstacule && bottom !== before) {
+          neighbors.push(bottom);
     }if (d1 && !d1.isObstacule && d1 !== before) {
           neighbors.push(d1);
     }if (d2 && !d2.isObstacule && d2 !== before) {
